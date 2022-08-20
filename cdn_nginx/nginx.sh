@@ -95,8 +95,8 @@ function depend(){
 	make -j4 && make -j4 install
 	#安装openssl
 	cd ${dir}
-	wget --no-check-certificate  -O openssl.tar.gz ${http_host}lib/openssl-${openssl_version}.tar.gz
-	tar -zxvf openssl.tar.gz
+	wget --no-check-certificate ${http_host}lib/openssl-${openssl_version}.tar.gz
+	tar -zxvf openssl-${openssl_version}.tar.gz
 	cd openssl-${openssl_version}
 	./config
 	make -j4 && make -j4 install
@@ -270,7 +270,7 @@ read -p ":" istype
 case $istype in
     1) 
     	check_os
-    	get_ip 2>&1 | tee /root/nginx_cdn_ip.log
+    	get_ip
     	chk_firewall
     	#安装jemalloc
     	#jemalloc,2020/11/09暂时去掉jemalloc
@@ -281,7 +281,7 @@ case $istype in
     ;;
     2) 
     	check_os
-    	get_ip 2>&1 | tee /root/nginx_cdn_ip.log
+    	get_ip
     	chk_firewall
     	#安装jemalloc
     	#jemalloc，2020/11/09暂时去掉jemalloc
