@@ -270,22 +270,22 @@ read -p ":" istype
 case $istype in
     1) 
     	check_os
-    	get_ip
+    	get_ip 2>&1 | tee /root/nginx_cdn_ip.log
     	chk_firewall
     	#安装jemalloc
     	#jemalloc,2020/11/09暂时去掉jemalloc
     	#安装依赖
-    	depend
+    	depend 2>&1 | tee /root/nginx_cdn_depend.log
     	#安装nginx
-    	CompileInstall
+    	CompileInstall 2>&1 | tee /root/nginx_cdn_install.log
     ;;
     2) 
     	check_os
-    	get_ip
+    	get_ip 2>&1 | tee /root/nginx_cdn_ip.log
     	chk_firewall
     	#安装jemalloc
     	#jemalloc，2020/11/09暂时去掉jemalloc
-    	BinaryInstall
+    	BinaryInstall 2>&1 | tee /root/nginx_cdn_install.log
     ;;
     3) 
     	#执行卸载函数
