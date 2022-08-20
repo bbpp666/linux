@@ -1,15 +1,13 @@
 #!/bin/bash
 ############### CentOS一键安装Nginx脚本 ###############
-#Author:xiaoz.me
-#Update:2020-11-15
-#Github:https://github.com/helloxz/nginx-cdn
-####################### END #######################
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/sbin
 export PATH
 
+#资源host
+http_host='https://raw.githubusercontent.com/bbpp666/linux/master/cdn_nginx/'
+#安装路径
 dir='/usr/local/'
-
 #定义nginx版本
 nginx_version='1.18'
 #定义openssl版本
@@ -70,7 +68,7 @@ function DelPort(){
 
 #安装jemalloc优化内存管理
 function jemalloc(){
-	wget http://soft.xiaoz.org/linux/jemalloc-5.2.0.tgz
+	wget ${http_host}lib/jemalloc-5.2.0.tgz
 	tar -zxvf jemalloc-5.2.0.tgz
 	cd jemalloc-5.2.0
 	./configure
@@ -83,36 +81,36 @@ function jemalloc(){
 function depend(){
 	#安装pcre
 	cd ${dir}
-	wget --no-check-certificate https://nchc.dl.sourceforge.net/project/pcre/pcre/${pcre_version}/pcre-${pcre_version}.tar.gz
+	wget --no-check-certificate ${http_host}lib/pcre-${pcre_version}.tar.gz
 	tar -zxvf pcre-${pcre_version}.tar.gz
 	cd pcre-${pcre_version}
 	./configure
 	make -j4 && make -j4 install
 	#安装zlib
 	cd ${dir}
-	wget http://soft.xiaoz.org/linux/zlib-1.2.11.tar.gz
+	wget ${http_host}lib/zlib-1.2.11.tar.gz
 	tar -zxvf zlib-1.2.11.tar.gz
 	cd zlib-1.2.11
 	./configure
 	make -j4 && make -j4 install
 	#安装openssl
 	cd ${dir}
-	wget --no-check-certificate -O openssl.tar.gz https://www.openssl.org/source/openssl-${openssl_version}.tar.gz
+	wget --no-check-certificate -O openssl.tar.gz ${http_host}lib/openssl-${openssl_version}.tar.gz
 	tar -zxvf openssl.tar.gz
 	cd openssl-${openssl_version}
 	./config
 	make -j4 && make -j4 install
 	#下载testcookie-nginx-module
 	cd ${dir}
-	wget http://soft.xiaoz.org/nginx/testcookie-nginx-module.zip
+	wget ${http_host}module/testcookie-nginx-module.zip
 	unzip testcookie-nginx-module.zip
 	#下载ngx_http_ipdb_module
 	#cd ${dir}
-	#wget http://soft.xiaoz.org/nginx/ngx_http_ipdb_module.zip
+	#wget ${http_host}module/ngx_http_ipdb_module.zip
 	#unzip ngx_http_ipdb_module.zip
 	#下载ngx_http_geoip2_module
 	cd ${dir}
-	wget http://soft.xiaoz.org/nginx/ngx_http_geoip2_module.zip
+	wget ${http_host}module/ngx_http_geoip2_module.zip
 	unzip ngx_http_geoip2_module.zip
 }
 
@@ -120,7 +118,7 @@ function depend(){
 function install_service(){
 	if [ -d "/etc/systemd/system" ]
 	then
-		wget -P /etc/systemd/system https://raw.githubusercontent.com/helloxz/nginx-cdn/master/nginx.service
+		wget -P /etc/systemd/system ${http_host}nginx.service
 		systemctl daemon-reload
 		systemctl enable nginx
 	fi
@@ -134,25 +132,25 @@ function CompileInstall(){
 	
 	###重新启用替换模块
 	cd ${dir}
-	wget http://soft.xiaoz.org/nginx/ngx_http_substitutions_filter_module.zip
+	wget ${http_host}module/ngx_http_substitutions_filter_module.zip
 	unzip ngx_http_substitutions_filter_module.zip
 
 	#下载purecache模块
 	cd ${dir}
-	wget http://soft.xiaoz.org/nginx/ngx_cache_purge-2.3.tar.gz
+	wget ${http_host}module/ngx_cache_purge-2.3.tar.gz
 	tar -zxvf ngx_cache_purge-2.3.tar.gz
 	mv ngx_cache_purge-2.3 ngx_cache_purge
 
 	#下载brotli
-	wget http://soft.xiaoz.org/nginx/ngx_brotli.tar.gz
+	wget ${http_host}module/ngx_brotli.tar.gz
 	tar -zxvf ngx_brotli.tar.gz
 
 	#安装Nginx
 	cd ${dir}
 	#下载nginx
-	wget https://wget.ovh/nginx/xcdn-${nginx_version}.tar.gz
-	tar -zxvf xcdn-${nginx_version}.tar.gz
-	cd xcdn-${nginx_version}
+	wget http://nginx.org/download/nginx-${nginx_version}.tar.gz
+	tar -zxvf nginx-${nginx_version}.tar.gz
+	cd nginx-${nginx_version}
 	./configure --prefix=/usr/local/nginx --user=www --group=www \
 	--with-stream \
 	--with-http_stub_status_module \
@@ -173,7 +171,7 @@ function CompileInstall(){
 	make -j4 && make -j4 install
 
 	#一点点清理工作
-	rm -rf ${dir}xcdn-1.*
+	rm -rf ${dir}nginx-1.*
 	rm -rf ${dir}zlib-1.*
 	rm -rf ${dir}pcre-8.*
 	rm -rf ${dir}openssl*
@@ -190,9 +188,9 @@ function CompileInstall(){
 
 	#复制配置文件
 	mv /usr/local/nginx/conf/nginx.conf /usr/local/nginx/conf/nginx.conf.bak
-	wget --no-check-certificate https://raw.githubusercontent.com/helloxz/nginx-cdn/master/nginx.conf -P /usr/local/nginx/conf/
+	wget --no-check-certificate ${http_host}conf/nginx.conf -P /usr/local/nginx/conf/
 	#日志分割
-	wget --no-check-certificate https://raw.githubusercontent.com/helloxz/nginx-cdn/master/etc/logrotate.d/nginx -P /etc/logrotate.d/
+	wget --no-check-certificate ${http_host}nginx -P /etc/logrotate.d/
 	mkdir -p /usr/local/nginx/conf/vhost
 	mkdir -p /usr/local/nginx/conf/cdn
 	#启动nginx
@@ -207,7 +205,7 @@ function CompileInstall(){
 	#echo "/usr/local/nginx/sbin/nginx" >> /etc/rc.d/rc.local
 	#chmod +x /etc/rc.d/rc.local
 	echo "------------------------------------------------"
-	echo "XCDN installed successfully. Please visit the http://${osip}"
+	echo "Nginx installed successfully. Please visit the http://${osip}"
 }
 
 #二进制安装Nginx
@@ -217,13 +215,13 @@ function BinaryInstall(){
 	useradd -M -g www www -s /sbin/nologin
 
 	#下载到指定目录
-	wget http://soft.xiaoz.org/nginx/xcdn-binary-${nginx_version}.tar.gz -O /usr/local/nginx.tar.gz
+	wget ${http_host}nginx-binary-${nginx_version}.tar.gz -O /usr/local/nginx.tar.gz
 
 	#解压
 	cd /usr/local && tar -zxvf nginx.tar.gz
 
 	#日志自动分割
-	wget --no-check-certificate https://raw.githubusercontent.com/helloxz/nginx-cdn/master/etc/logrotate.d/nginx -P /etc/logrotate.d/
+	wget --no-check-certificate ${http_host}/nginx -P /etc/logrotate.d/
 
 	#环境变量
 	echo "export PATH=$PATH:/usr/local/nginx/sbin" >> /etc/profile
@@ -238,7 +236,7 @@ function BinaryInstall(){
 	#chmod +x /etc/rc.d/rc.local
 
 	echo "------------------------------------------------"
-	echo "XCDN installed successfully. Please visit the http://${osip}"
+	echo "Nginx installed successfully. Please visit the http://${osip}"
 }
 
 #卸载Nginx
