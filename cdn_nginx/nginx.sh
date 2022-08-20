@@ -68,7 +68,7 @@ function DelPort(){
 
 #安装jemalloc优化内存管理
 function jemalloc(){
-	wget ${http_host}lib/jemalloc-5.2.0.tgz
+	wget --no-check-certificate ${http_host}lib/jemalloc-5.2.0.tgz
 	tar -zxvf jemalloc-5.2.0.tgz
 	cd jemalloc-5.2.0
 	./configure
@@ -88,29 +88,29 @@ function depend(){
 	make -j4 && make -j4 install
 	#安装zlib
 	cd ${dir}
-	wget ${http_host}lib/zlib-1.2.11.tar.gz
+	wget --no-check-certificate ${http_host}lib/zlib-1.2.11.tar.gz
 	tar -zxvf zlib-1.2.11.tar.gz
 	cd zlib-1.2.11
 	./configure
 	make -j4 && make -j4 install
 	#安装openssl
 	cd ${dir}
-	wget --no-check-certificate -O openssl.tar.gz ${http_host}lib/openssl-${openssl_version}.tar.gz
+	wget --no-check-certificate  -O openssl.tar.gz ${http_host}lib/openssl-${openssl_version}.tar.gz
 	tar -zxvf openssl.tar.gz
 	cd openssl-${openssl_version}
 	./config
 	make -j4 && make -j4 install
 	#下载testcookie-nginx-module
 	cd ${dir}
-	wget ${http_host}module/testcookie-nginx-module.zip
+	wget --no-check-certificate ${http_host}module/testcookie-nginx-module.zip
 	unzip testcookie-nginx-module.zip
 	#下载ngx_http_ipdb_module
 	#cd ${dir}
-	#wget ${http_host}module/ngx_http_ipdb_module.zip
+	#wget --no-check-certificate ${http_host}module/ngx_http_ipdb_module.zip
 	#unzip ngx_http_ipdb_module.zip
 	#下载ngx_http_geoip2_module
 	cd ${dir}
-	wget ${http_host}module/ngx_http_geoip2_module.zip
+	wget --no-check-certificate ${http_host}module/ngx_http_geoip2_module.zip
 	unzip ngx_http_geoip2_module.zip
 }
 
@@ -132,17 +132,17 @@ function CompileInstall(){
 	
 	###重新启用替换模块
 	cd ${dir}
-	wget ${http_host}module/ngx_http_substitutions_filter_module.zip
+	wget --no-check-certificate ${http_host}module/ngx_http_substitutions_filter_module.zip
 	unzip ngx_http_substitutions_filter_module.zip
 
 	#下载purecache模块
 	cd ${dir}
-	wget ${http_host}module/ngx_cache_purge-2.3.tar.gz
+	wget --no-check-certificate ${http_host}module/ngx_cache_purge-2.3.tar.gz
 	tar -zxvf ngx_cache_purge-2.3.tar.gz
 	mv ngx_cache_purge-2.3 ngx_cache_purge
 
 	#下载brotli
-	wget ${http_host}module/ngx_brotli.tar.gz
+	wget --no-check-certificate ${http_host}module/ngx_brotli.tar.gz
 	tar -zxvf ngx_brotli.tar.gz
 
 	#安装Nginx
@@ -189,10 +189,12 @@ function CompileInstall(){
 	#复制配置文件
 	mv /usr/local/nginx/conf/nginx.conf /usr/local/nginx/conf/nginx.conf.bak
 	wget --no-check-certificate ${http_host}conf/nginx.conf -P /usr/local/nginx/conf/
+	
 	#日志分割
 	wget --no-check-certificate ${http_host}nginx -P /etc/logrotate.d/
 	mkdir -p /usr/local/nginx/conf/vhost
 	mkdir -p /usr/local/nginx/conf/cdn
+	
 	#启动nginx
 	/usr/local/nginx/sbin/nginx
 
@@ -215,7 +217,7 @@ function BinaryInstall(){
 	useradd -M -g www www -s /sbin/nologin
 
 	#下载到指定目录
-	wget ${http_host}nginx-binary-${nginx_version}.tar.gz -O /usr/local/nginx.tar.gz
+	wget --no-check-certificate ${http_host}nginx-binary-${nginx_version}.tar.gz -O /usr/local/nginx.tar.gz
 
 	#解压
 	cd /usr/local && tar -zxvf nginx.tar.gz
