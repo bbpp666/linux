@@ -9,7 +9,7 @@ http_host='https://raw.githubusercontent.com/bbpp666/linux/master/cdn_nginx/'
 #安装路径
 dir='/usr/local/'
 #定义nginx版本
-nginx_version='1.18'
+nginx_version='1.18.0'
 #定义openssl版本
 openssl_version='1.1.1g'
 #定义pcre版本
