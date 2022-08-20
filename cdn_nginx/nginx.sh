@@ -118,7 +118,7 @@ function depend(){
 function install_service(){
 	if [ -d "/etc/systemd/system" ]
 	then
-		wget -P /etc/systemd/system ${http_host}nginx.service
+	wget --no-check-certificate ${http_host}nginx.service -P /etc/systemd/system
 		systemctl daemon-reload
 		systemctl enable nginx
 	fi
