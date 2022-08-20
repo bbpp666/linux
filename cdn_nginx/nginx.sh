@@ -236,7 +236,7 @@ function BinaryInstall(){
 	#开机自启
 	#echo "/usr/local/nginx/sbin/nginx" >> /etc/rc.d/rc.local
 	#chmod +x /etc/rc.d/rc.local
-
+	rm -rf nginx.tar.gz
 	echo "------------------------------------------------"
 	echo "Nginx installed successfully. Please visit the http://${osip}"
 }
