@@ -25,7 +25,7 @@ CentOS一键安装Nginx
 
 ### 安装
 ```
-wget https://raw.githubusercontent.com/bbpp666/linux/cdn_nginx/master/nginx.sh && bash nginx.sh
+wget https://raw.githubusercontent.com/bbpp666/linux/master/cdn_nginx/nginx.sh && bash nginx.sh
 ```
 
 * 如果是CentOS 6的系统，请选择编译安装。
