@@ -1,4 +1,4 @@
-# XCDN
+# Nginx
 CentOS一键安装Nginx
 
 ### 环境要求
