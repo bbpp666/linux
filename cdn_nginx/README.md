@@ -38,3 +38,5 @@ wget https://raw.githubusercontent.com/bbpp666/linux/master/cdn_nginx/nginx.sh &
 * 停止nginx：`nginx -s stop`
 * 重载nginx：`nginx -s reload`
 * 语法检测：`nginx -t`
+
+项目出处 https://github.com/helloxz/nginx-cdn/
